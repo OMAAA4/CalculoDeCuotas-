@@ -1,0 +1,11 @@
+C:\Users\Omar\source\repos\Préstamos\Préstamos\bin\Debug\Préstamos.exe.config
+C:\Users\Omar\source\repos\Préstamos\Préstamos\bin\Debug\Préstamos.exe
+C:\Users\Omar\source\repos\Préstamos\Préstamos\bin\Debug\Préstamos.pdb
+C:\Users\Omar\source\repos\Préstamos\Préstamos\obj\Debug\Préstamos.csproj.AssemblyReference.cache
+C:\Users\Omar\source\repos\Préstamos\Préstamos\obj\Debug\Préstamos.Form1.resources
+C:\Users\Omar\source\repos\Préstamos\Préstamos\obj\Debug\Préstamos.Properties.Resources.resources
+C:\Users\Omar\source\repos\Préstamos\Préstamos\obj\Debug\Préstamos.csproj.GenerateResource.cache
+C:\Users\Omar\source\repos\Préstamos\Préstamos\obj\Debug\Préstamos.csproj.CoreCompileInputs.cache
+C:\Users\Omar\source\repos\Préstamos\Préstamos\obj\Debug\Préstamos.exe
+C:\Users\Omar\source\repos\Préstamos\Préstamos\obj\Debug\Préstamos.pdb
+C:\Users\Omar\source\repos\Préstamos\Préstamos\obj\Debug\Préstamos.exe.config
