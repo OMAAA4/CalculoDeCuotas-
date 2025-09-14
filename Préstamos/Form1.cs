@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -58,10 +59,10 @@ namespace Préstamos
             errorProvider2.Clear();
             txtCuota.Enabled = false;
             bool Monto, Tasa, Plazo, Seguro;
-            Monto = double.TryParse(txtMonto.Text, out TMonto);
-            Tasa = double.TryParse(txtTasa.Text, out TTasa);
+            Monto = double.TryParse(txtMonto.Text.Replace("$",""), out TMonto);
+            Tasa = double.TryParse(txtTasa.Text.Replace("%",""), out TTasa);
             Plazo = int.TryParse(txtPlazo.Text, out TPlazo);
-            Seguro = double.TryParse(txtSeguro.Text, out TSeguro);
+            Seguro = double.TryParse(txtSeguro.Text.Replace("$", ""), out TSeguro);
 
             ErrorEnDatos error = new ErrorEnDatos(ErroresCampos);
 
@@ -87,7 +88,7 @@ namespace Préstamos
             if(Monto && Tasa && Plazo && Seguro)
             {
                 TCuota = CalcularCuota(TMonto,TTasa,TPlazo,TSeguro);
-                txtCuota.Text = TCuota.ToString();
+                txtCuota.Text = string.Concat("$",TCuota.ToString());
             }
         }
 
@@ -129,6 +130,33 @@ namespace Préstamos
             error(dataGridView1, "Se modificaron pagos extras");
         }
 
+        private void txtMonto_Leave(object sender, EventArgs e)
+        {
+            if (!txtMonto.Text.StartsWith("$"))
+            {
+                string formato = string.Concat("$", txtMonto.Text);
+                txtMonto.Text = formato;
+            }
+        }
+
+        private void txtTasa_Leave(object sender, EventArgs e)
+        {
+            if (!txtTasa.Text.EndsWith("%"))
+            {
+                string formato = string.Concat(txtTasa.Text, "%");
+                txtTasa.Text = formato;
+            }
+        }
+
+        private void txtSeguro_Leave(object sender, EventArgs e)
+        {
+            if (!txtSeguro.Text.StartsWith("$"))
+            {
+                string formato = string.Concat("$", txtSeguro.Text);
+                txtSeguro.Text = formato;
+            }
+        }
+
         private void txtSeguro_TextChanged(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(txtCuota.Text))
@@ -151,9 +179,9 @@ namespace Préstamos
         {
             groupBox3.Visible = false;
 
-            dtextra.Columns.Add("Mes", typeof(string));
-            dtextra.Columns.Add("Dia", typeof(string));
-            dtextra.Columns.Add("Monto", typeof(string));
+            dtextra.Columns.Add("Mes", typeof(int));
+            dtextra.Columns.Add("Dia", typeof(int));
+            dtextra.Columns.Add("Monto", typeof(double));
 
             bs.DataSource = dtextra;
             dataGridView2.AutoGenerateColumns = true;
@@ -322,11 +350,11 @@ namespace Préstamos
                             {
 
                                 linea[0] = string.Concat((i+1).ToString(), ".", z["Dia"].ToString());
-                                linea[1] = Convert.ToInt32(z["Monto"].ToString()).ToString();
+                                linea[1] = Convert.ToDouble(z["Monto"].ToString()).ToString();
                                 InteresMes = CalcularInteresPorDias(CapitalVigente, TTasa, Convert.ToInt32(z["Dia"].ToString()));
                                 linea[2] = InteresMes.ToString("N2");
                                 linea[3] = (0.0).ToString();
-                                Saldo = Math.Round(Convert.ToInt32(z["Monto"].ToString()) - 0.0 - InteresMes, 2);
+                                Saldo = Math.Round(Convert.ToDouble(z["Monto"].ToString()) - 0.0 - InteresMes, 2);
                                 linea[4] = Saldo.ToString("N2");
                                 CapitalVigente = Math.Round(CapitalVigente - Saldo, 2);
                                 linea[5] = CapitalVigente.ToString("N2");
@@ -347,9 +375,15 @@ namespace Préstamos
                 InteresAcumulado = Convert.ToDouble(dt.Compute("SUM(Interes)", ""));
                 SeguroAcomulado = Convert.ToDouble(dt.Compute("SUM(Seguro)", ""));
 
-                txtInteresPagado.Text = InteresAcumulado.ToString();
-                OtrosPagado.Text = SeguroAcomulado.ToString();
+                txtInteresPagado.Text = string.Concat("$",InteresAcumulado.ToString());
+                OtrosPagado.Text = string.Concat("$", SeguroAcomulado.ToString());
                 txtTiempo.Text = TiempoDeVida.ToString();
+
+                dataGridView1.Columns["Cuota"].DefaultCellStyle.Format = "C2";
+                dataGridView1.Columns["Interes"].DefaultCellStyle.Format = "C2";
+                dataGridView1.Columns["Seguro"].DefaultCellStyle.Format = "C2";
+                dataGridView1.Columns["Saldo"].DefaultCellStyle.Format = "C2";
+                dataGridView1.Columns["Capital"].DefaultCellStyle.Format = "C2";
 
             }
             else
