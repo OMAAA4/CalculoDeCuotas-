@@ -1,0 +1,37 @@
+﻿# Archivos de compilación
+bin/
+obj/
+
+# Paquetes NuGet
+*.nupkg
+*.snupkg
+packages/
+
+# Configuración de Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Archivos de logs
+*.log
+
+# Configuración de Rider (si alguien lo usa)
+.idea/
+
+# Archivos temporales
+*.tmp
+*.bak
+
+# Configuración de depuración
+*.pdb
+
+# Archivos de caché
+*.cache
+*.DS_Store
+
+# Otros archivos que no deben ir al repositorio
+*.env
+*.local
+node_modules/
